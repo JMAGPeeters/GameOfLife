@@ -19,6 +19,7 @@
         <thucydides.version>0.9.268</thucydides.version>
         <jelastic.context>gameoflife</jelastic.context>
         <jelastic.environment>wakaleo</jelastic.environment>
+        <sonar.buildVersion>5.3</sonar.buildVersion>
     </properties>
 
     <scm>
@@ -143,6 +144,56 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                  <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                  <artifactId>sonar-packaging-maven-plugin</artifactId>
+                  <version>1.15</version>
+                  <extensions>true</extensions>
+                  <configuration>
+                    <pluginClass>com.mycompany.sonarqube.ExamplePlugin</pluginClass>
+                  </configuration>
+                </plugin>
+                  <plugin>
+                     <groupId>org.jacoco</groupId>
+                     <artifactId>jacoco-maven-plugin</artifactId>
+                     <version>0.7.5.201505241946</version>
+                     <executions>
+                          <execution>
+                              <goals>
+                                  <goal>prepare-agent</goal>
+                              </goals>
+                          </execution>
+                          <execution>
+                              <id>report</id>
+                              <phase>prepare-package</phase>
+                              <goals>
+                                  <goal>report</goal>
+                              </goals>
+                          </execution>
+                      </executions>
+                  </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>3.3</version>
+                  <configuration>
+                    <source>${jdk.min.version}</source>
+                    <target>${jdk.min.version}</target>
+                  </configuration>
+                </plugin>
+                <plugin>
+                  <!-- UTF-8 bundles are not supported by Java, so they must be converted during build -->
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>native2ascii-maven-plugin</artifactId>
+                  <version>1.0-beta-1</version>
+                  <executions>
+                    <execution>
+                      <goals>
+                        <goal>native2ascii</goal>
+                      </goals>
+                    </execution>
+                  </executions>
+                </plugin>
         </plugins>
 
         <pluginManagement>
@@ -162,15 +213,6 @@
                         <storyType>html</storyType>                         l
                         <storyReport>${basedir}/target/easyb/easyb-report.html
                         </storyReport>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
-                    <artifactId>sonar-packaging-maven-plugin</artifactId>
-                    <version>1.15</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <pluginClass>com.mycompany.sonarqube.ExamplePlugin</pluginClass>
                     </configuration>
                 </plugin>
 
@@ -213,30 +255,32 @@
             <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
-         <dependency>
+        
+        <dependency>
             <groupId>org.sonarsource.sonarqube</groupId>
             <artifactId>sonar-plugin-api</artifactId>
             <version>5.4-RC4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <!-- packaged with the plugin -->
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+          <!-- packaged with the plugin -->
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+          <version>2.6</version>
         </dependency>
         <!-- unit tests -->
         <dependency>
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-testing-harness</artifactId>
             <version>5.1</version>
-            <scope>test</scope>
+          <scope>test</scope>
         </dependency>
+  
         <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert</artifactId>
-            <version>1.4</version>
-            <scope>test</scope>
+          <groupId>org.easytesting</groupId>
+          <artifactId>fest-assert</artifactId>
+          <version>1.4</version>
+          <scope>test</scope>
         </dependency>
     </dependencies>
 
